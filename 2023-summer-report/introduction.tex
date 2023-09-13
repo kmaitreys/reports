@@ -1,7 +1,84 @@
-\chapter{Introduction}
+\chapter{Astrochemical Modeling and Observations}
+Disk chemistry models are used to provide interpretative frameworks for observations, to expand the kinds of species that can be characterized in disks beyond what is directly observable, and to connect different evolutionary phases up until and sometimes including planet formation.
 
-\section{}
-\subsection{}
+To setup any kind of astrochemical modeling, we need a \textit{physical structure} of the disk; a grid based layout where we will model the spatial points (2-D models which assume a azimuthally symmetric disk and full blown 3-D models both exist) having their own unique physical characteristics (dust/gas densities, dust/gas temperatures) and their own unique chemistry, which is depends on factors like location of that particular point in the grid of the disk and distance from the central star.
+
+\section{Physical Structure}
+We start by considering parametric profiles for density distributions. We assume the dust-to-gas mass ratio to be equal to the ISM value of $0.01$ and use the single equation to model both the structure of gas and dust. We assume that the disk is static in the vertical direction and is in Keplerian rotation in the azimuthal direction (only needed for the line radiative transfer). The axisymmetric disk density structure we use takes the following parameterized form in cylindrical coordinates $(r, z)$(refs).
+
+\begin{equation}
+	\rho (r, z) = \dfrac{\Sigma}{\sqrt{2 \pi} h} \exp \Bigg[\dfrac{1}{2}\Big(\dfrac{z}{h}\Big)^2\Bigg],
+\end{equation}
+where
+\begin{equation}
+	\begin{split}
+		\Sigma (r) &= \Sigma_c \Bigg(\dfrac{r}{r_c}\Bigg)^{-\gamma} \exp \Bigg[-\Bigg(\dfrac{r}{r_c}\Bigg)^{2-\gamma}\Bigg], \\
+		h &= h_c \Bigg(\dfrac{r}{r_c}\Bigg)^{\psi}
+	\end{split}
+\end{equation}
+
+The disk mass (gas or dust) is
+\begin{equation}
+	\begin{split}
+		M_{disk} &= \int_{r_{in}}^{r_{out}} \Sigma \: 2 \pi r dr, \\
+		&= \dfrac{2}{2-\gamma} \pi r_c^2 \Sigma_c \left[\exp \left(\dfrac{r_{in}}{r_c}\right)^{2-\gamma}-\left(\dfrac{r_{out}}{r_c}\right)^{2-\gamma}\right]
+	\end{split}
+\end{equation}
+Here, $r_{in}$ and $r_{out}$ are the radii of disk's inner and outer edges respectively (a tapered disk can be assumed by employing an exponential tapering function, but here, we assume a sharp inner edge). $r_c$ is the characteristic radius, or the radius where the we have observationally constrained parameter values.
+$h_c$ is the scale height at the characteristic radius. $\gamma$ and $\psi$ are power indices for disk surface density distribution ($\Sigma$) and scale height as a function of radius respectively.
+
+\subsection{Dust species and distribution}
+We assume two types of dust grains, each with a Mathis–Rumpl–Nordsieck (MRN) size distribution (Mathis et al. 1977). The two dust components are assumed to be spatially coexistent in this fiducial model. The larger population has $r_{min} = \SI{1}{\micro \meter}$ and $r_{max} = \SI{100}{\micro \meter}$, with a dust-to-gas mass ratio of $0.01$, while the smaller population has $r_{min} = \SI{0.01}{\micro \meter}$ and $r_{max} = \SI{1}{\micro \meter}$, with a dust-to-gas mass ratio of $2 \times 10^{-5}$. Larger values for $r_{max}$ of the big grains has been used in the literature for fitting the disk spectral energy distribution. However, the chemical processes mainly depends on the total available dust grain surface area, which is more sensitive to the assigned overall mass fractions of the small and big grains than the value of $r_{max}$. The dust material is assumed to be a $7:3$ mixture of ``smoothed UV astronomical silicate'' and graphite. The optical parameters of the dust are taken from the Web site of Bruce T. Draine4 (Draine \& Lee 1984; Laor \& Draine 1993).
+\section{Chemical Evolution}
+After setting up the physical structure and performing a Monte-Carlo based dust radiative transfer (Bjorkman), we have the radiation structure of the disk. After establishing the this dust temperature distribution, we evolve the disk chemistry for 1 Myr. Since the heating and cooling processes are coupled with chemistry, the gas temperature is evolved in tandem with chemistry based on the heating and cooling rates. Namely, we solve the following set of ordinary differential equations (ODEs):
+\begin{equation}
+	\begin{split}
+		\dfrac{d}{dt} X_i &= P_i (X;T) - D_i (X;T), \quad i = 1, \dots, N \\
+		\dfrac{d}{dt} T &= (\Gamma - \Lambda) / C_V,
+	\end{split}
+\end{equation}
+where $X_i$ is is the abundance of species $i$, $P_i$ and $D_i$ are the production and destruction rates of this species, which are functions of the chemical abundances and temperature (and other physical parameters), and $N$ is the total number of species. $C_V = 3k_B/2$ is the volume-specific heat capacity of an ideal gas, where $k_B$ is the Boltzmann constant. The exact value of $C_V$ is not important because we are only concerned with the equilibrium temperature rather than the rate of temperature change. The heating and cooling rates are contained in $\Gamma$ and $\Lambda$. We do not need a separate set of equations to account for the elemental conservation since elements are automatically conserved within numerical tolerance.
+\subsection{Chemical Network}
+We use the full KIDA chemical network (Wakelam 2015) for our three-phase chemistry (gas phase, gas-grain surface and grain surface-grain mantle). We consider chemical reactions involving adsorption, thermal desorption, photodesorption, cosmic-ray desorption, \ce{H2} formation, photodissociation of species like \ce{H2O}, \ce{OH}, \ce{CO} and \ce{H2}
+\subsection{Thermochemical modeling}
+In our thermochemical considerations we have taken following processes into account:
+\begin{enumerate}
+	\item Photoelectric heating,
+	\item Chemical heating and cooling,
+	\item Heating by formation of \ce{H2},
+	\item Heating by viscous dissipation,
+	\item Heating by cosmic ray and X-ray,
+	\item Energy exchange by gas-dust collision,
+	\item Heating by photodissociation processes,
+	\item Heating by ionization of atomic carbon,
+	\item Cooling by electrons recombine with small dust grains,
+	\item Cooling by the rotational transitions of \ce{H2}, and the rotational and vibrational transitions of \ce{CO} and \ce{H2O},
+	\item Heating and cooling by the vibrational transitions of \ce{H2}, and cooling by \ce{C+} and \ce{O} emission,
+	\item Cooling by $\text{Ly}\alpha$ emission, free–bound, and free–free emissions.
+\end{enumerate}
+\subsection{Dynamical chemistry}
+There is a growing list of observations that are difficult to explain with static models, and a frontier in disk chemistry modeling is the comodeling of chemistry and dynamical processes that occur on timescales similar to those of chemical reactions. Simulating the combined effects of all major physical, chemical, and dynamical processes throughout the entire disk is currently too computationally expensive, however, and models therefore need to choose which physical and chemical processes to include and exclude. Several models incorporate aspects of vertical mixing (e.g., Semenov \& Wiebe 2011, Furuya \& Aikawa 2014), radial gas diffusion (e.g., Aikawa \& Herbst 1999, Ilgner et al. 2004, Nomura et al. 2009, Bosman et al. 2018, Price et al. 2020), and dust evolution (e.g., Vasyunin et al. 2011, Akimkin et al. 2013, Krijt et al. 2018, Booth \& Ilee 2019, Eistrup \& Henning 2022, Van Clepper et al. 2022), but many of them consider a simplified chemistry (i.e., they are not necessarily more complete than static models with larger chemical networks).
+In addition to local mass transport processes, some models consider how global environmental changes affect the chemistry. The effects of stellar evolution have been explored by solving for chemical abundances while altering the disk environment at specified time steps (Price et al. 2020). The impact of short-lived accretion outbursts from the young star on disk compositions has also been investigated (Cleeves et al. 2017, Rab et al. 2017). The outbursts generate chemical changes that persist beyond the duration of the event (Molyarova et al. 2018), but the potential for longterm chemical changes or alteration of planetary compositions by such phenomena has yet to be determined.
+\section{Observational techniques}
+Disk chemistry is observationally characterized through a range of techniques. These observations directly produce molecular line emission fluxes or absorption depths, from which molecular column densities, abundance structures, or higher-level constraints on the disk chemistry and its environment can be retrieved
+
+An observational chemical characterization of protoplanetary disks can be achieved by spectroscopic studies at a wide range of frequencies and energy scales probing electronic, vibrational, and rotational transitions of atoms, molecules, and ions. Each wavelength and technique probes a unique aspect of the disk chemistry, and a comprehensive disk chemical characterization requires observations across the electromagnetic spectrum.
+
+\subsection{X-ray, UV and Optical regimes}
+Starting at the high-energy end of the spectrum, X-ray and UV transitions are used to probe the elemental abundances of gas and dust that are being accreted onto the stellar surface, providing access to the composition of inner disk refractories (e.g., Drake et al. 2005, Ardila et al. 2013, Kama et al. 2016, Günther et al. 2018). UV observations of fluorescent H2 and CO transitions are also used to probe hot gas in the innermost disk region, including its C/O/H ratio (France et al. 2012, Arulanantham et al. 2021). Optical spectroscopy can be used to constrain the elemental composition of the innermost disk regions (e.g., Facchini et al. 2016) and to characterize the compositions and dynamics of disk winds from the upper layers of the inner disk regions (Pascucci et al. 2022 and references therein).
+
+\subsection{NIR-MIR regimes}
+The near- to mid-infrared (NIR–MIR) regime enables observations of rovibrational and highly excited rotational lines of simple molecules in the upper layers of the inner few astronomical units of disks, where temperatures and densities are high enough to collisionally excite these transitions (Pontoppidan et al. 2014 and references therein). From space, the \textit{Spitzer} mission was instrumental in surveying numerous disks in MIR emission lines (e.g., Carr \& Najita 2008, Salyk et al. 2011b), but at fairly low spectral resolution ($\lambda / \Delta \lambda < 700$). Observations at these wavelengths are set to be transformed by the \textit{James Webb Space Telescope} ( JWST).
+
+\subsection{FIR regime}
+In the far infrared (FIR), most spectroscopic surveys have been performed with the \textit{Herschel} mission because of the prohibitive atmospheric transmission at these wavelengths. But since the it being defunct, there is a need for a new FIR mission which can probe molecules like \ce{HD} which is crucial chemical tracer of \ce{H2}, so that we can estimate the gas content in the disk.
+
+\subsection{Sub-millimeter and Millimeter regime}
+These enable the spectroscopic characterization of cold gas, which includes most of the disk gas reservoir. Many small and abundant molecules present rotational transitions at these wavelengths, with typical upper energy levels of 5–500 K. Depending on line and dust optical depths, these observations can probe all the way to the disk midplane, but more often access the outer disk upper layers. In 2011–2014, (sub)millimeter observations of disks were transformed by the arrival of the Atacama Large Millimeter and Submillimeter Array (ALMA), whose collecting area and long baselines enable the detection of rarer molecules and the study of disk chemistry at higher spatial resolution down to scales of 10 AU (Öberg et al. 2015b, Huang et al. 2018a). So far, disk chemistry has not been accessible at longer wavelengths, but in the future a more sensitive radio array may provide access to \ce{NH3} and large organic molecules in the disk midplane.
+
+
+
+
          
 
 

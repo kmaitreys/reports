@@ -1,6 +1,9 @@
 \documentclass[12pt,a4paper]{report}
 \usepackage[pdftex]{graphicx}
 \usepackage{url} 
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{mhchem}
 \usepackage[bookmarks, colorlinks=false, pdfborder={0 0 0}, pdftitle={<pdf title here>}, pdfauthor={<author's name here>}, pdfsubject={<subject here>}, pdfkeywords={<keywords here>}]{hyperref} 
 
 \begin{document}
@@ -8,7 +11,7 @@
 
 
 \input{title}
-\input{certificate}
+%\input{certificate}
 \input{abstract}
 
 \pagenumbering{roman}
@@ -23,7 +26,10 @@
 \input{work-done}
 \input{future-work}
 \input{conclusion}
-\input{acknow}
+%\input{acknow}
 \input{ref}
-
+%\nocite{*}
+%\bibliographystyle{plain}
+%\bibliography{2023summer}
+%\printbibliography
 \end{document}
